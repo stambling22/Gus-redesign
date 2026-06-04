@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Exploration: Gus Landscapes</title>
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        :root {
+            --bg-hub: #090b11;
+            --card-bg: #121620;
+            --card-border: rgba(255, 255, 255, 0.05);
+            --card-border-hover: rgba(231, 139, 36, 0.3);
+            --text-muted: #8e9bb0;
+            --accent-gold: #e78b24;
+            --accent-sage: #5f8a5a;
+        }
+
+        body {
+            background-color: var(--bg-hub);
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4rem 2rem 2rem 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle radial ambient glow behind the hub */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(231, 139, 36, 0.05) 0%, rgba(95, 138, 90, 0.03) 50%, transparent 100%);
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(80px);
+        }
+
+        .header-section {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 3.5rem;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: slideDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.75rem;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .main-title span {
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--accent-gold), #ffb259);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            margin-bottom: auto;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 968px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            body {
+                padding: 2rem 1.5rem;
+            }
+            .main-title {
+                font-size: 2.25rem;
+            }
+        }
+
+        .concept-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 480px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Ambient glow line on card top border */
+        .concept-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+            transition: var(--transition-smooth);
+        }
+
+        .concept-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--card-border-hover);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                        0 0 40px rgba(231, 139, 36, 0.05);
+        }
+
+        .concept-card:hover::after {
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .card-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-weight: 300;
+            margin-bottom: 3.5rem;
+        }
+
+        .card-btn {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #090b11;
+            background-color: #ffffff;
+            border: none;
+            padding: 1.1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: block;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .concept-card:hover .card-btn {
+            background-color: var(--accent-gold);
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(231, 139, 36, 0.3);
+        }
+
+        /* Specific card hover highlights */
+        .concept-card.c1:hover {
+            border-color: rgba(95, 138, 90, 0.3);
+        }
+        .concept-card.c1:hover .card-btn {
+            background-color: var(--accent-sage);
+            box-shadow: 0 6px 15px rgba(95, 138, 90, 0.3);
+        }
+
+        .concept-card.c3:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .concept-card.c3:hover .card-btn {
+            background-color: #ffffff;
+            color: #000000;
+            box-shadow: 0 6px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-hub {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            width: 100%;
+            padding-top: 2rem;
+        }
+
+        /* Hide the concept switcher in the hub page since it's redundant */
+        .concept-switcher-container {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <h1 class="main-title">Design Exploration: <span>Gus Landscapes</span></h1>
+        <p class="subtitle">Three distinct visual directions exploring the intersection of desert landscape architecture and luxury hospitality.</p>
+    </div>
+
+    <div class="cards-grid">
+        <!-- Concept 01: The Museum -->
+        <div class="concept-card c1">
+            <div>
+                <div class="card-number">Concept 01</div>
+                <h2 class="card-title">The Museum</h2>
+                <p class="card-desc">Inspired by high-end editorial with a reverent aesthetic. Alternating canvases of pure white and dark slate, tight typography, and a bespoke image comparison tool presented like an art artifact.</p>
+            </div>
+            <a href="concept1.html" class="card-btn">View Concept 1</a>
+        </div>
+
+        <!-- Concept 02: Cinematic Canvas -->
+        <div class="concept-card c2">
+            <div>
+                <div class="card-number">Concept 02</div>
+                <h2 class="card-title">Cinematic Canvas</h2>
+                <p class="card-desc">A dramatic, environmental approach. Full-viewport media snapping, zero decorative chrome, and a singular focus on the raw, cinematic transformation of the desert landscaping space.</p>
+            </div>
+            <a href="concept2.html" class="card-btn">View Concept 2</a>
+        </div>
+
+        <!-- Concept 03: Modern Brutalist -->
+        <div class="concept-card c3">
+            <div>
+                <div class="card-number">Concept 03</div>
+                <h2 class="card-title">Modern Brutalist</h2>
+                <p class="card-desc">Ultra-modern digital energy. A pure black canvas, extreme negative tracking, vibrant gradient spotlights, and highly tactical, pill-shaped UI components emphasizing solid design structure.</p>
+            </div>
+            <a href="concept3.html" class="card-btn">View Concept 3</a>
+        </div>
+    </div>
+
+    <footer class="footer-hub">
+        Designed for Gus Landscape Contractors Inc. &copy; 2026
+    </footer>
+
+    <!-- Shared JS containing dynamic switcher logic (though switcher is hidden on index, it's nice to keep in lifecycle) -->
+    <script src="main.js"></script>
+</body>
+</html>

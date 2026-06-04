@@ -1,0 +1,153 @@
+/* ==========================================
+   Shared Stylesheet for Gus Landscapes Redesign
+   Contains: Resets, Fonts, Variables, Utilities, Switcher Layout
+   ========================================== */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@400;700;800&display=swap');
+
+:root {
+    /* Logo Brand Colors */
+    --color-orange: #E78B24;
+    --color-sage: #5F8A5A;
+    --color-sage-light: #8EAE8A;
+    --color-sage-dark: #3F5E3B;
+
+    /* Base Colors */
+    --bg-dark: #0f172a;
+    --bg-light: #faf9f6;
+    --text-dark: #1e293b;
+    --text-light: #f8fafc;
+    
+    /* Spacing & Transitions */
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-quick: all 0.2s ease;
+}
+
+/* Modern CSS Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Premium Floating Theme Switcher */
+.concept-switcher-container {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    z-index: 9999;
+    transition: var(--transition-smooth);
+}
+
+.concept-switcher-container:hover {
+    transform: translateX(-50%) translateY(-4px);
+}
+
+.concept-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.concept-switcher-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 0 0.75rem 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.concept-switcher-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 999px;
+    transition: var(--transition-smooth);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.concept-switcher-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.concept-switcher-btn.active {
+    color: #0f172a;
+    background: #fff;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Switcher custom behavior based on active concepts */
+body.theme-museum .concept-switcher-btn.active-museum {
+    background: var(--color-sage);
+    color: #fff;
+}
+
+body.theme-cinema .concept-switcher-btn.active-cinema {
+    background: var(--color-orange);
+    color: #fff;
+}
+
+body.theme-brutalist .concept-switcher-btn.active-brutalist {
+    background: #fff;
+    color: #000;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid #000;
+}
+
+/* Quick Page Transition Animation */
+.page-fade-in {
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hide scrollbar utility for Cinematic snapping */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

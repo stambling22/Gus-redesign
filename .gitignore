@@ -1,0 +1,21 @@
+# Gus-redesign .gitignore
+# Generated 2026-06-02
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Include images and videos in the repository so they build correctly on Netlify
+# Images/
+
+# Build artifacts
+node_modules/
+dist/
+.cache/
+
+# Local environment
+.env
+.env.local
+*.log

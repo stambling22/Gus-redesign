@@ -1,0 +1,1095 @@
+/* ==========================================
+   Concept 2: Cinematic Canvas (Environmental Snapping)
+   Theme: Widescreen, zero-chrome, dark-mode environmental,
+   scroll-snapping layers, glassmorphic cards, uppercase navigation.
+   ========================================== */
+
+:root {
+    --cinema-bg: #0A0A0B;
+    --cinema-text: #F5F5F4;
+    --cinema-glass-bg: rgba(255, 255, 255, 0.03);
+    --cinema-glass-border: rgba(255, 255, 255, 0.06);
+    --cinema-accent-orange: #e78b24;
+    --cinema-border-accent: rgba(231, 139, 36, 0.3);
+}
+
+body.theme-cinema {
+    background-color: var(--cinema-bg);
+    color: var(--cinema-text);
+    font-family: 'DM Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Lock viewport scroll, container handles snapping */
+}
+
+/* Headings */
+.theme-cinema h1,
+.theme-cinema h2,
+.theme-cinema h3,
+.theme-cinema h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Scroll Snap Layout */
+.scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
+
+.snap-section {
+    height: 100vh;
+    width: 100vw;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+}
+
+/* Floating Zero-Chrome Navigation */
+.cinema-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    background: linear-gradient(to bottom, rgba(10, 10, 11, 0.8) 0%, transparent 100%);
+}
+
+.cinema-logo {
+    height: 32px;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* Render white logo cleanly in dark mode */
+}
+
+.cinema-nav {
+    display: flex;
+    gap: 2.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.6rem 2rem;
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.cinema-nav-link {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: var(--transition-quick);
+}
+
+.cinema-nav-link:hover,
+.cinema-nav-link.active {
+    color: #ffffff;
+}
+
+.cinema-cta-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #090c13;
+    background-color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: var(--transition-quick);
+}
+
+.cinema-cta-btn:hover {
+    background-color: var(--cinema-accent-orange);
+    color: #ffffff;
+}
+
+/* SECTION 1: Fullscreen Hero */
+.hero-snap {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 10%;
+}
+
+.video-bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
+
+.video-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 50%, rgba(10, 10, 11, 0.5) 0%, rgba(10, 10, 11, 0.95) 80%);
+    z-index: -1;
+}
+
+.cinema-hero-content {
+    max-width: 750px;
+    background: rgba(95, 138, 90, 0.08); /* very subtle sage green glass */
+    border: 1px solid rgba(95, 138, 90, 0.15); /* subtle sage border */
+    padding: 2.5rem 3rem;
+    margin-top: 6.5rem; /* separation from fixed navigation */
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.cinema-geo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--cinema-accent-orange);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    margin-bottom: 1.25rem;
+}
+
+.cinema-headline {
+    font-size: 3.8rem;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.cinema-desc-text {
+    font-size: 1.15rem;
+    color: var(--cinema-accent-orange); /* orange description for contrast */
+    max-width: 500px;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.cinema-actions {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    margin-left: 3rem; /* align with text inside panel */
+}
+
+.cinema-btn-glass {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    padding: 1.1rem 2.2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: var(--transition-quick);
+}
+
+.cinema-btn-glass:hover {
+    background-color: #ffffff;
+    color: var(--cinema-bg);
+}
+
+.cinema-btn-primary {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+    background-color: var(--cinema-accent-orange);
+    padding: 1.1rem 2.2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: var(--transition-quick);
+}
+
+.cinema-btn-primary:hover {
+    background-color: #e07a0c;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: bounce 2s infinite;
+}
+
+.indicator-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.indicator-arrow {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-8px);
+    }
+    60% {
+        transform: translateY(-4px);
+    }
+}
+
+/* SECTION 2: Capabilities Snap (Split screen) */
+.services-snap {
+    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+}
+
+.split-pane-visual {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.pane-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.split-pane-info {
+    background-color: #121214;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+}
+
+.pane-content-wrapper {
+    max-width: 500px;
+}
+
+.cinema-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--cinema-accent-orange);
+    margin-bottom: 1.5rem;
+}
+
+.pane-title {
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 3rem;
+}
+
+.cinema-services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.cinema-service-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--cinema-accent-orange);
+}
+
+.cinema-service-item p {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+.cinema-service-features {
+    list-style: none;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.cinema-service-features li {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.75);
+    position: relative;
+    padding-left: 1.8rem;
+    font-weight: 300;
+}
+
+.cinema-service-features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--cinema-accent-orange);
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.cinema-service-features li::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: calc(0.5em + 3px);
+    width: 2px;
+    height: 2px;
+    background-color: var(--cinema-accent-orange);
+    border-radius: 50%;
+}
+
+/* SECTION 3: Portfolio Featured Split Snap */
+.portfolio-snap {
+    background-color: var(--cinema-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 8% 2rem 8%;
+}
+
+.portfolio-snap-header {
+    margin-bottom: 2rem;
+}
+
+.portfolio-snap-title {
+    font-size: 2.5rem;
+}
+
+.cinema-featured-project {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+/* Interactive Before/After Slider */
+.before-after-slider {
+    width: 100%;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 60%; /* 5:3 aspect ratio */
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--cinema-glass-border);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+}
+
+.slider-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.img-after {
+    z-index: 1;
+}
+
+.img-before {
+    z-index: 2;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+}
+
+/* Ensure the image inside clipped container handles absolute sizing */
+.slider-container .img-before img {
+    width: 100vw;
+    max-width: 800px;
+}
+
+.slider-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 40px;
+    margin-left: -20px;
+    z-index: 3;
+    cursor: ew-resize;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.slider-line {
+    width: 2px;
+    height: 100%;
+    background-color: var(--cinema-accent-orange);
+    box-shadow: 0 0 12px var(--cinema-accent-orange);
+}
+
+.slider-arrow {
+    background-color: #ffffff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: #0A0A0B;
+    position: absolute;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    border: 1px solid var(--cinema-accent-orange);
+}
+
+.arrow-left {
+    transform: translateX(-16px);
+}
+
+.arrow-right {
+    transform: translateX(16px);
+}
+
+.badge-tag {
+    position: absolute;
+    z-index: 3;
+    top: 1.25rem;
+    background-color: rgba(10, 10, 11, 0.85);
+    color: #ffffff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--cinema-glass-border);
+    backdrop-filter: blur(4px);
+}
+
+.before-badge {
+    left: 1.25rem;
+}
+
+.after-badge {
+    right: 1.25rem;
+}
+
+/* Slider CTA button sizing overrides */
+.slider-cta {
+    align-self: flex-start;
+    padding: 0.9rem 2rem;
+    margin-top: 1.5rem;
+}
+
+/* Reordered Portfolio Cards */
+.cinema-mini-portfolio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    margin-top: 3.5rem;
+    border-top: 1px solid var(--cinema-border-accent);
+    padding-top: 2.5rem;
+}
+
+.mini-project-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    background: var(--cinema-glass-bg);
+    border: 1px solid var(--cinema-glass-border);
+    padding: 1.25rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: var(--transition-smooth);
+}
+
+.mini-project-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(231, 139, 36, 0.25);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.mini-card-img-wrapper {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mini-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+}
+
+.mini-project-card:hover .mini-card-img {
+    transform: scale(1.1);
+}
+
+.mini-card-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mini-card-title {
+    font-size: 1.15rem;
+    margin-bottom: 0.25rem;
+    color: #ffffff;
+    font-family: 'Syne', sans-serif;
+    text-transform: uppercase;
+}
+
+.mini-card-desc {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+    font-weight: 300;
+}
+
+.cinema-teaser-link {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cinema-accent-orange);
+    text-decoration: none;
+    transition: var(--transition-quick);
+}
+
+.cinema-teaser-link:hover {
+    color: #ffffff;
+}
+
+/* SECTION 4: Process Snap */
+.process-snap {
+    background-image: linear-gradient(rgba(18, 18, 20, 0.94), rgba(18, 18, 20, 0.94)), url('Images/palm-springs-landscape-installation-1.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10%;
+}
+
+.process-snap-title {
+    font-size: 2.5rem;
+    margin-bottom: 4rem;
+}
+
+.cinema-process-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+}
+
+.cinema-process-card {
+    background: var(--cinema-glass-bg);
+    border: 1px solid var(--cinema-glass-border);
+    padding: 3rem 2.5rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: var(--transition-smooth);
+}
+
+.cinema-process-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(231, 139, 36, 0.2);
+}
+
+.proc-icon-wrapper {
+    margin-bottom: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(95, 138, 90, 0.08); /* sage green background glow */
+    border: 1px solid rgba(95, 138, 90, 0.15); /* sage border */
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+.proc-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--color-sage, #5F8A5A); /* sage green */
+}
+
+.cinema-process-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+    color: var(--cinema-accent-orange);
+}
+
+.cinema-process-card p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+/* SECTION 5: About Snap */
+.about-snap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10%;
+}
+
+.about-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.about-snap-content {
+    background: var(--cinema-glass-bg);
+    border: 1px solid var(--cinema-glass-border);
+    padding: 4rem 5rem;
+    border-radius: 16px;
+    max-width: 800px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+.about-snap-title {
+    font-size: 2.75rem;
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
+}
+
+.about-snap-text {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+}
+
+.about-stats-panel {
+    display: flex;
+    gap: 3rem;
+    border-top: 1px solid var(--cinema-border-accent);
+    padding-top: 2rem;
+    margin-top: 2.5rem;
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--cinema-accent-orange);
+}
+
+.stat-lbl {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* SECTION 6: Contact & Footer Snap */
+.contact-snap {
+    background-color: #121214;
+    display: flex;
+    align-items: center;
+    padding: 6rem 8% 2rem 8%;
+}
+
+.contact-footer-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 85%;
+    justify-content: space-between;
+}
+
+.cinema-reviews-block {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem;
+    border-bottom: 1px solid var(--cinema-border-accent);
+    padding-bottom: 2rem;
+}
+
+.cinema-review-item p {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    color: #ffffff;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.cinema-review-item span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+}
+
+.cinema-contact-footer-split {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    padding-top: 2rem;
+    align-items: flex-start;
+}
+
+.cinema-contact-form h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.cinema-contact-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.cinema-form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.cinema-contact-form input,
+.cinema-contact-form textarea {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.9rem 1.2rem;
+    border-radius: 6px;
+    color: #ffffff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: var(--transition-quick);
+}
+
+.cinema-contact-form input:focus,
+.cinema-contact-form textarea:focus {
+    border-color: var(--cinema-accent-orange);
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.cinema-submit-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+    background-color: var(--cinema-accent-orange);
+    border: none;
+    padding: 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition-quick);
+}
+
+.cinema-submit-btn:hover {
+    background-color: #e07a0c;
+}
+
+.footer-nap h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.footer-nap p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 0.25rem;
+    font-weight: 300;
+}
+
+.footer-nap a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-nap a:hover {
+    color: var(--cinema-accent-orange);
+}
+
+.footer-seo-links {
+    margin: 1.5rem 0;
+    border-top: 1px solid var(--cinema-border-accent);
+    padding-top: 1.5rem;
+}
+
+.footer-seo-links strong {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.4);
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+.cities-grid span {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.cinema-compliance {
+    border-top: 1px solid var(--cinema-border-accent);
+    padding-top: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.75rem;
+    align-items: center;
+}
+
+.cinema-compliance a {
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+}
+
+.cinema-compliance a:hover {
+    color: #ffffff;
+}
+
+.cinema-compliance span {
+    color: rgba(255, 255, 255, 0.25);
+    margin-left: auto;
+}
+
+/* Active Section Dot Navigation Panel */
+.snap-dots {
+    position: fixed;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: var(--transition-quick);
+}
+
+.dot:hover,
+.dot.active {
+    background-color: var(--cinema-accent-orange);
+    transform: scale(1.4);
+}
+
+/* Contact Logo */
+.contact-logo-row {
+    margin-bottom: 2rem;
+}
+
+.contact-info-logo {
+    height: 48px;
+    object-fit: contain;
+}
+
+/* Premium Active Section Entry Transitions */
+.snap-section .cinema-hero-content,
+.snap-section .pane-content-wrapper,
+.snap-section .portfolio-container,
+.snap-section .process-snap-container,
+.snap-section .about-snap-content,
+.snap-section .contact-footer-wrapper {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.snap-section.active .cinema-hero-content,
+.snap-section.active .pane-content-wrapper,
+.snap-section.active .portfolio-container,
+.snap-section.active .process-snap-container,
+.snap-section.active .about-snap-content,
+.snap-section.active .contact-footer-wrapper {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Delay reveals for capabilities items */
+.snap-section.active .cinema-service-item:nth-child(1) { transition-delay: 0.15s; }
+.snap-section.active .cinema-service-item:nth-child(2) { transition-delay: 0.3s; }
+
+/* Delay reveals for process cards */
+.snap-section.active .cinema-process-card:nth-child(1) { transition-delay: 0.15s; }
+.snap-section.active .cinema-process-card:nth-child(2) { transition-delay: 0.3s; }
+.snap-section.active .cinema-process-card:nth-child(3) { transition-delay: 0.45s; }
+
+/* Delay reveals for teaser cards */
+.snap-section.active .mini-project-card:nth-child(1) { transition-delay: 0.15s; }
+.snap-section.active .mini-project-card:nth-child(2) { transition-delay: 0.3s; }
+.snap-section.active .mini-project-card:nth-child(3) { transition-delay: 0.45s; }
+
+/* Interactive split pane visual scale zoom */
+.snap-section .split-pane-visual img {
+    transform: scale(1.1);
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.snap-section.active .split-pane-visual img {
+    transform: scale(1);
+}
+
+/* Responsive Customization */
+@media (max-width: 968px) {
+    body.theme-cinema {
+        overflow-y: auto; /* Remove fixed height locking for mobile browsers */
+    }
+    .scroll-container {
+        height: auto;
+        scroll-snap-type: none; /* Disable scroll snap for seamless mobile flow */
+    }
+    .snap-section {
+        height: auto;
+        min-height: 100vh;
+        scroll-snap-align: none;
+        padding: 6rem 1.5rem 3rem 1.5rem;
+    }
+    .cinema-header {
+        padding: 1.5rem;
+    }
+    .cinema-nav, 
+    .cinema-cta-btn,
+    .snap-dots,
+    .scroll-indicator {
+        display: none !important;
+    }
+    .cinema-headline {
+        font-size: 2.6rem;
+    }
+    .cinema-actions {
+        margin-left: 0;
+        margin-top: 1.5rem;
+    }
+    .services-snap {
+        grid-template-columns: 1fr;
+    }
+    .split-pane-visual {
+        height: 300px;
+    }
+    .split-pane-info {
+        padding: 3rem 1rem;
+    }
+    .cinema-featured-project,
+    .cinema-process-grid,
+    .cinema-reviews-block,
+    .cinema-contact-footer-split {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+    
+    .cinema-mini-portfolio {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .mini-project-card {
+        padding: 1rem;
+    }
+    
+    .about-snap-content {
+        padding: 2.5rem 1.5rem;
+    }
+    .cities-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .cinema-compliance {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .cinema-compliance span {
+        margin-left: 0;
+    }
+    
+    /* Disable snap transitions on mobile for smoother scrolling */
+    .snap-section .cinema-hero-content,
+    .snap-section .pane-content-wrapper,
+    .snap-section .portfolio-container,
+    .snap-section .process-snap-container,
+    .snap-section .about-snap-content,
+    .snap-section .contact-footer-wrapper {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    .snap-section .split-pane-visual img {
+        transform: none;
+        transition: none;
+    }
+}
