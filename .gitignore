@@ -6,6 +6,7 @@
 Thumbs.db
 .vscode/
 .idea/
+.agents/
 
 # Include images and videos in the repository so they build correctly on Netlify
 # Images/
